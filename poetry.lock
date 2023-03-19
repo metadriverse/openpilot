@@ -2723,7 +2723,7 @@ pyparsing = ">=2.0.2,<3.0.5 || >3.0.5"
 
 [[package]]
 name = "panda3d"
-version = "1.10.13.post1"
+version = "1.10.13"
 description = "Panda3D is a framework for 3D rendering and game development for Python and C++ programs."
 category = "dev"
 optional = false
@@ -6829,12 +6829,6 @@ packaging = [
     {file = "packaging-21.3.tar.gz", hash = "sha256:dd47c42927d89ab911e606518907cc2d3a1f38bbd026385970643f9c5b8ecfeb"},
 ]
 panda3d = [
-    {file = "panda3d-1.10.13.post1-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:447ae57766a44d43cd95edebf5ac54a84ae6f17bec6793346113ecdc5801f292"},
-    {file = "panda3d-1.10.13.post1-cp311-cp311-macosx_11_0_universal2.whl", hash = "sha256:cb1417a6604eda53bd3b22ea56e11ae83737522b12c56faa83542d593d1e4513"},
-    {file = "panda3d-1.10.13.post1-cp311-cp311-manylinux2014_aarch64.whl", hash = "sha256:d049fd28bd858c9bd146e1ee91ba3d9cb61341577d4bf73f79ea46b18fa2236c"},
-    {file = "panda3d-1.10.13.post1-cp311-cp311-manylinux2014_x86_64.whl", hash = "sha256:0564592ffe62a37e953b9e07c35ab8b3724dfaa340d0ed2a06c64a7324d854bb"},
-    {file = "panda3d-1.10.13.post1-cp311-cp311-win32.whl", hash = "sha256:e9d335c53241d65c6ab7af11520dca337e809d743f05b9325186b6677cffa507"},
-    {file = "panda3d-1.10.13.post1-cp311-cp311-win_amd64.whl", hash = "sha256:4ffb25f61e76046f1c0029bc8b74f7a41a0cba01f5be8672c8ba4371294936f1"},
 ]
 panda3d-gltf = [
     {file = "panda3d-gltf-0.13.tar.gz", hash = "sha256:d06d373bdd91cf530909b669f43080e599463bbf6d3ef00c3558bad6c6b19675"},
