@@ -292,6 +292,7 @@ class PGTrafficManager(BaseManager):
     def random_vehicle_type(self):
         from metadrive.component.vehicle.vehicle_type import random_vehicle_type
         vehicle_type = random_vehicle_type(self.np_random, [0.2, 0.3, 0.3, 0.2, 0.0, 0.0])
+        print(f"vehicle type: {vehicle_type}")
         return vehicle_type
 
     def destroy(self) -> None:

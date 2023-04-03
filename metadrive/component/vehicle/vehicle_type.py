@@ -141,12 +141,12 @@ class SVehicle(BaseVehicle):
 
 
 vehicle_type = {
-    "s": DefaultVehicle,
-    "m": DefaultVehicle,
-    "l": DefaultVehicle,
-    "xl": DefaultVehicle,
+    "s": SVehicle,
+    "m": MVehicle,
+    "l": LVehicle,
+    "xl": XLVehicle,
     "default": DefaultVehicle,
-    "static_default": DefaultVehicle
+    "static_default": StaticDefaultVehicle
 }
 
 

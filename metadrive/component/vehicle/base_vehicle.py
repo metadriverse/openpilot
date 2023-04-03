@@ -135,9 +135,20 @@ class BaseVehicle(BaseObject, BaseVehicleState):
 
         # NOTE: it is the game engine, not vehicle drivetrain
         # self.engine = get_engine()
-        BaseObject.__init__(self, name, random_seed, self.engine.global_config["vehicle_config"])
+        import copy
+        global_config_clone = copy.deepcopy(self.engine.global_config["vehicle_config"])
+        if self.__class__ != BaseVehicle:
+            if "max_engine_force" in global_config_clone:
+                global_config_clone.pop("max_engine_force")
+                global_config_clone.pop("max_brake_force")
+                global_config_clone.pop("max_steering")
+                global_config_clone.pop("wheel_friction")
+        BaseObject.__init__(self, name, random_seed, global_config_clone)
         BaseVehicleState.__init__(self)
+
         self.update_config(vehicle_config)
+        print("max engine force")
+        print(self.config["max_engine_force"])
         use_special_color = self.config["use_special_color"]
 
         # build vehicle physics model

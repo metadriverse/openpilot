@@ -68,6 +68,7 @@ class myBridge():
       
 
   def game_runner(self):
+    from metadrive.policy.idm_policy import IDMPolicy
     config = dict(
       window_size=(W, H),
       use_render=True, # need this on to get the camera
@@ -77,17 +78,17 @@ class myBridge():
       mouse_look=False,
       manual_control=True,
       rgb_clip=True,
-      
+      # agent_policy=IDMPolicy,
       random_lane_width=True,
       random_lane_num=True,
       openpilot_control=True,
-      random_agent_model=True,
-      environment_num=6,
-      traffic_density=0.01,
+      random_agent_model=False,
+      environment_num=100,
+      traffic_density=0.1,
       camera_dist= 0.0,
       camera_pitch= 0,
       camera_height= 0.6,
-      camera_fov= 120,
+      camera_fov= 60,
       camera_aspect_ratio= (W/H),
       camera_smooth= False,
       show_interface= False,
@@ -100,7 +101,7 @@ class myBridge():
                             rgb_clip=True,
                             show_navi_mark=False,
                             max_engine_force=2500,
-                            max_brake_force=300,
+                            max_brake_force=500,
                             max_steering = 60,
                             wheel_friction=4.0,
                             ),
