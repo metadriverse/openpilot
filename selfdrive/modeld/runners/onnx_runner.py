@@ -64,7 +64,7 @@ if __name__ == "__main__":
     provider = 'OpenVINOExecutionProvider'
   elif 'CUDAExecutionProvider' in ort.get_available_providers() and 'ONNXCPU' not in os.environ:
     options.intra_op_num_threads = 2
-    provider = 'CUDAExecutionProvider'
+    provider = 'CPUExecutionProvider'
   else:
     options.intra_op_num_threads = 2
     options.inter_op_num_threads = 8

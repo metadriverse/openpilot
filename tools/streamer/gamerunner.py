@@ -9,9 +9,12 @@ from common.realtime import sec_since_boot, config_realtime_process, Priority, R
 
 from metadrive import MetaDriveEnv
 from metadrive.constants import HELP_MESSAGE
-
+from metadrive.envs.scenario_env import ScenarioEnv
+from metadrive.engine.asset_loader import AssetLoader
 #from tools.sim.bridge.common import VehicleState 
 #from common.realtime import DT_DMON, Ratekeeper
+
+NuScenesEnv = ScenarioEnv
 
 sm = messaging.SubMaster(['carControl', 'controlsState'])
 
@@ -30,7 +33,7 @@ class VehicleState:
 
 c_W = 1928
 c_H = 1208
-W, H = round(c_W//1.4), round(c_H//1.4)
+W, H = c_W, c_H
 
 class myBridge():
   def __init__(self):
@@ -75,46 +78,57 @@ class myBridge():
       offscreen_render=True,
       streamer=True,
       streamer_ipc="ipc:///tmp/metadrive_window",
-      mouse_look=False,
+      # mouse_look=False,
       manual_control=True,
       rgb_clip=True,
       # agent_policy=IDMPolicy,
-      random_lane_width=True,
-      random_lane_num=True,
+      # random_lane_width=True,
+      # random_lane_num=True,
       openpilot_control=True,
       random_agent_model=False,
-      environment_num=100,
-      traffic_density=0.1,
+      num_scenarios = 5,
+      # "force_reuse_object_name": True,
+      # "data_directory": "/home/shady/Downloads/test_processed",
+      horizon = 1000,
+      # "no_static_vehicles": True,
+      # "show_policy_mark": True,
+      # "show_coordinates": True,
+      force_destroy = True,
+      default_vehicle_in_traffic = True,
+      # environment_num=100,
+      # traffic_density=0.1,
       camera_dist= 0.0,
       camera_pitch= 0,
       camera_height= 0.6,
-      camera_fov= 60,
+      camera_fov= 120,
       camera_aspect_ratio= (W/H),
       camera_smooth= False,
       show_interface= False,
       physics_world_step_size = 0.02, #.03
-      map="SCCCC",
-      start_seed=random.randint(0, 1000),
+      render_pipeline=True,
+      # map="SCCCC",
+      # start_seed=random.randint(0, 1000),
       vehicle_config = dict(image_source="rgb_camera", 
                             rgb_camera= (1,1),
                             stack_size=1,
                             rgb_clip=True,
                             show_navi_mark=False,
                             max_engine_force=2500,
-                            max_brake_force=500,
+                            max_brake_force=800,
                             max_steering = 60,
                             wheel_friction=4.0,
                             ),
+      data_directory = AssetLoader.file_path("nuscenes", return_raw_style=False),
     )
 
-    env = MetaDriveEnv(config)
+    env = NuScenesEnv(config)
     #rk = Ratekeeper(4, print_delay_threshold=None)
     try:
 
       o = env.reset()
       print(HELP_MESSAGE)
       env.vehicle.expert_takeover = False
-      assert isinstance(o, dict)
+      # assert isinstance(o, dict)
       while not self._exit_event.is_set():
         sm.update(0)
         _,_,_,step_infos = env.step([0,0])
