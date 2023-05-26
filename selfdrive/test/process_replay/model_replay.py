@@ -200,19 +200,23 @@ if __name__ == "__main__":
   update = "--update" in sys.argv
   replay_dir = os.path.dirname(os.path.abspath(__file__))
   ref_commit_fn = os.path.join(replay_dir, "model_replay_ref_commit")
-
+  print("start")
   # load logs
   lr = list(LogReader(get_url(TEST_ROUTE, SEGMENT)))
+  # run replays
+  print("start nav replay")
+  if not NO_NAV:
+    log_msgs = nav_model_replay(lr)
   frs = {
     'roadCameraState': FrameReader(get_url(TEST_ROUTE, SEGMENT, log_type="fcamera"), readahead=True),
     'driverCameraState': FrameReader(get_url(TEST_ROUTE, SEGMENT, log_type="dcamera"), readahead=True),
     'wideRoadCameraState': FrameReader(get_url(TEST_ROUTE, SEGMENT, log_type="ecamera"), readahead=True)
   }
 
-  # run replays
+
+  print("start regular replay")
   log_msgs = model_replay(lr, frs)
-  if not NO_NAV:
-    log_msgs += nav_model_replay(lr)
+
 
   # get diff
   failed = False

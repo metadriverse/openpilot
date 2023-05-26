@@ -33,7 +33,7 @@ class VehicleState:
 
 c_W = 1928
 c_H = 1208
-W, H = c_W, c_H
+W, H = round(c_W//1.4), round(c_H//1.4)
 
 class myBridge():
   def __init__(self):
@@ -65,6 +65,9 @@ class myBridge():
     self._threads.append(threading.Thread(target=Tasks.peripherals, args=(self,)))
     self._threads.append(threading.Thread(target=Tasks.dm, args=(self,)))
     self._threads.append(threading.Thread(target=Tasks.can, args=(self,)))
+    self._threads.append(threading.Thread(target=Tasks.navi_instruction, args=(self,)))
+    self._threads.append(threading.Thread(target=Tasks.navi_route, args=(self,)))
+    
     
     for t in self._threads:
       t.start()      
@@ -104,8 +107,9 @@ class myBridge():
       camera_aspect_ratio= (W/H),
       camera_smooth= False,
       show_interface= False,
-      physics_world_step_size = 0.02, #.03
-      render_pipeline=True,
+      show_logo = False,
+      # physics_world_step_size = 0.02,
+      render_pipeline=False,
       # map="SCCCC",
       # start_seed=random.randint(0, 1000),
       vehicle_config = dict(image_source="rgb_camera", 
@@ -117,6 +121,7 @@ class myBridge():
                             max_brake_force=800,
                             max_steering = 60,
                             wheel_friction=4.0,
+                            no_wheel_friction=False,
                             ),
       data_directory = AssetLoader.file_path("nuscenes", return_raw_style=False),
     )

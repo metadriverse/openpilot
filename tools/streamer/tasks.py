@@ -47,6 +47,12 @@ class Tasks:
   def device_state(self):
     device_state_function(self._exit_event)
 
+  def navi_route(self):
+    navi_route_function(self._exit_event)
+
+  def navi_instruction(self):
+    navi_instruction_function(self._exit_event)
+
 class Camerad:
   def __init__(self, W, H):
     self.pm = messaging.PubMaster(['roadCameraState', 'wideRoadCameraState'])
@@ -207,6 +213,25 @@ def can_function_runner(vs: VehicleState, exit_event: threading.Event):
     simulator_can_function(pm, vs.speed, vs.angle, i, vs.cruise_sp, vs.is_engaged)
     rk.keep_time()
     i += 1
+  
+def navi_route_function(exit_event: threading.Event):
+  pm = messaging.PubMaster(['navRoute'])
+  msg = messaging.new_message('navRoute')
+  coords = []
+  coords.append({"latitude": 0, "longitude":0})
+  coords.append({"latitude": 0.1, "longitude":0.1})
+  msg.navRoute.coordinates = coords
+  pm.send('navRoute', msg)
+
+def navi_instruction_function(exit_event: threading.Event):
+  pm = messaging.PubMaster(['navInstruction'])
+  rk = Ratekeeper(1.0)
+  while not exit_event.is_set():
+    msg = messaging.new_message('navInstruction')
+    msg.valid = False
+    pm.send('navInstruction', msg)
+    rk.keep_time()
+
 
 def sensor_function(vehicle_state, exit_event: threading.Event):
   pm = messaging.PubMaster(["gpsLocationExternal",'accelerometer','gyroscope'])
