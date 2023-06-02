@@ -71,6 +71,7 @@ procs = [
 if os.getenv("METADRIVE") is not None:
   procs += [
     PythonProcess("streamer", "tools.streamer.streamer", enabled=PC, offroad=True),
+    PythonProcess("nav_streamer", "tools.streamer.nav_streamer", enabled=PC, offroad=True),
     PythonProcess("gamerunner", "tools.streamer.gamerunner", enabled=PC, offroad=True),
   ]
 

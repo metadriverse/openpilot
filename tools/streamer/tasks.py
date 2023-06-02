@@ -7,6 +7,7 @@ import cereal.messaging as messaging
 import pyopencl as cl
 import pyopencl.array as cl_array
 import os
+import cv2
 import time
 from cereal import log
 from tools.streamer.can import simulator_can_function
@@ -52,6 +53,40 @@ class Tasks:
 
   def navi_instruction(self):
     navi_instruction_function(self._exit_event)
+
+
+class NavCamerad:
+  def __init__(self, W, H):
+    self.pm = messaging.PubMaster(['mapRenderState'])
+    self.sm = messaging.SubMaster(['liveLocationKalman'])
+    self.W = W
+    self.H = H
+    print("nav resolution: ", self.W, self.H)
+    self.frame_nav_id = 0
+    self.nav_vipc_type = VisionStreamType.VISION_STREAM_MAP
+    self.vipc_server = VisionIpcServer("navd")
+
+    self.vipc_server.create_buffers(self.nav_vipc_type, 4, False, self.W, self.H)
+    self.vipc_server.start_listener()
+
+  def cam_callback_nav(self, image):
+    eof = int(self.frame_nav_id * 0.5 * 1e9) # 20 fps
+    # hardcoded
+    image = cv2.resize(image, (256, 384))
+    self.vipc_server.send(self.nav_vipc_type, image.data.tobytes(), self.frame_nav_id, eof, eof) # YUV
+
+    dat = messaging.new_message('mapRenderState')
+    msg = {
+      "frameId": self.frame_nav_id,
+      "locationMonoTime": eof,
+      "renderTime": 0.0, 
+    }
+    setattr(dat,'mapRenderState', msg)
+    self.pm.send('mapRenderState', dat)
+
+    self.frame_nav_id += 1
+   
+ 
 
 class Camerad:
   def __init__(self, W, H):
@@ -118,6 +153,8 @@ class Camerad:
 
     self.frame_road_id += 1
 
+
+   
   def cam_callback_wide_road(self, image):
     rgb = image.copy()
 

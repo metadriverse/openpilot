@@ -1,4 +1,4 @@
-from tools.streamer.tasks import Camerad
+from tools.streamer.tasks import Camerad, NavCamerad
 import struct
 import numpy as np
 import zmq
@@ -51,6 +51,8 @@ def streamer():
     #cv2.imshow("cropped", cropped_img)
     #cv2.imshow('road_img', road_img)
     #cv2.waitKey(1)
+
+
 
 
 def main():
